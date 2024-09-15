@@ -1,0 +1,15 @@
+# Ignore node modules
+node_modules
+
+# Ignore build directory
+dist
+
+# Ignore data folder
+data
+
+# Ignore Git files
+.git
+.gitignore
+
+# Ignore local environment files
+.env
