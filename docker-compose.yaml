@@ -1,23 +1,6 @@
 version: '3.8'
 
 services:
-  api:
-    image: elasticsearch
-    container_name: api-elastic
-    environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=akmal02032009
-      - POSTGRES_DB=es
-      - ELASTICSEARCH_HOST=http://elasticsearch:9200
-    ports:
-      - '3000:3000'
-    depends_on:
-      - postgres
-      - elasticsearch
-    networks:
-      - backend
-
   postgres:
     image: postgres:15-alpine
     container_name: postgres-container
@@ -53,7 +36,7 @@ services:
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=_lfa9hanqZG8Wa98Yhi-
+      - ELASTICSEARCH_PASSWORD=your-elastic-password
     ports:
       - '5601:5601'
     depends_on:
@@ -72,6 +55,17 @@ services:
       - '5044:5044'
     depends_on:
       - elasticsearch
+    networks:
+      - backend
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.15.1
+    container_name: filebeat-container
+    volumes:
+      - /var/log/nestjs:/var/log/nestjs
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+    depends_on:
+      - logstash
     networks:
       - backend
 

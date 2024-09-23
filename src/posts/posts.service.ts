@@ -7,11 +7,7 @@ export class PostsService {
 
   constructor() {
     this.elasticsearchClient = new Client({
-      node: 'https://localhost:9200',
-      auth: { username: 'elastic', password: '_lfa9hanqZG8Wa98Yhi-' },
-      tls: {
-        rejectUnauthorized: false,
-      },
+      node: 'http://localhost:9200',
     });
   }
 

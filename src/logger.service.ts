@@ -1,29 +1,16 @@
-import { LoggerService } from '@nestjs/common';
-import * as winston from 'winston';
-import 'winston-logstash';
+import { Injectable, LoggerService } from '@nestjs/common';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
-export class AppLogger implements LoggerService {
-  private logger: winston.Logger;
-
-  constructor() {
-    this.logger = winston.createLogger({
-      transports: [
-        new winston.transports.Console(),
-        // new winston.transports.Logstash({
-        //   port: 5044,
-        //   host: 'localhost',
-        //   node_name: 'nestjs',
-        // }),
-      ],
-    });
-  }
+@Injectable()
+export class CustomLoggerService implements LoggerService {
+  constructor(@InjectPinoLogger() private readonly logger: PinoLogger) {}
 
   log(message: string) {
     this.logger.info(message);
   }
 
-  error(message: string, trace: string) {
-    this.logger.error(message, { trace });
+  error(message: string, trace?: string) {
+    this.logger.error({ message, trace });
   }
 
   warn(message: string) {
@@ -35,6 +22,6 @@ export class AppLogger implements LoggerService {
   }
 
   verbose(message: string) {
-    this.logger.verbose(message);
+    this.logger.trace(message);
   }
 }
